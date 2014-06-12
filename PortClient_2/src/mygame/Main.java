@@ -34,7 +34,7 @@ public class Main extends SimpleApplication {
     
     @Override
     public void simpleInitApp() {
-        flyCam.setMoveSpeed(500);
+        flyCam.setMoveSpeed(25);
         
         /** 1. Create terrain material and load four textures into it. */
         mat_terrain = new Material(assetManager,
