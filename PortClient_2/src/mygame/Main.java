@@ -37,8 +37,7 @@ public class Main extends SimpleApplication {
         flyCam.setMoveSpeed(25);
         
         /** 1. Create terrain material and load four textures into it. */
-        mat_terrain = new Material(assetManager,
-                "Common/MatDefs/Terrain/Terrain.j3md");
+        mat_terrain = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
         
         /** 1.1) Add ALPHA map (for red-blue-green coded splat textures) */
         mat_terrain.setTexture("Alpha", assetManager.loadTexture(
