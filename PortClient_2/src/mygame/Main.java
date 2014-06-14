@@ -5,6 +5,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.terrain.geomipmap.TerrainLodControl;
 import com.jme3.terrain.heightmap.AbstractHeightMap;
@@ -14,6 +15,7 @@ import com.jme3.texture.Texture;
 import com.jme3.texture.Texture.WrapMode;
 import com.jme3.util.SkyFactory;
 import com.jme3.water.WaterFilter;
+import de.lessvoid.nifty.Nifty;
 
 /** Sample 10 - How to create fast-rendering terrains from heightmaps,
  * and how to use texture splatting to make the terrain look good.  */
@@ -35,6 +37,18 @@ public class Main extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         flyCam.setMoveSpeed(25);
+        
+        /**
+         * Chat Window
+         */
+        NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
+                assetManager, inputManager, audioRenderer, guiViewPort);
+        Nifty nifty = niftyDisplay.getNifty();
+        nifty.fromXml("nifty/chat.xml", "start");
+        guiViewPort.addProcessor(niftyDisplay);
+        // disable the fly cam
+        flyCam.setDragToRotate(true);
+            
         
         /** 1. Create terrain material and load four textures into it. */
         mat_terrain = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
@@ -103,7 +117,7 @@ public class Main extends SimpleApplication {
         rootNode.addLight(ambient);
         
         rootNode.attachChild(SkyFactory.createSky(
-            assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
+                assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
         
     }
 }
