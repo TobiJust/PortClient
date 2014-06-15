@@ -1,0 +1,141 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package app;
+
+import com.jme3.app.SimpleApplication;
+import com.jme3.asset.AssetManager;
+import com.jme3.light.AmbientLight;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.post.FilterPostProcessor;
+import com.jme3.scene.Node;
+import com.jme3.terrain.geomipmap.TerrainLodControl;
+import com.jme3.terrain.geomipmap.TerrainQuad;
+import com.jme3.terrain.heightmap.AbstractHeightMap;
+import com.jme3.terrain.heightmap.ImageBasedHeightMap;
+import com.jme3.texture.Texture;
+import com.jme3.util.SkyFactory;
+import com.jme3.water.WaterFilter;
+
+public class GameWorld {
+
+    private SimpleApplication app;
+    private FilterPostProcessor fpp;
+    private WaterFilter water;
+    private Vector3f lightDir = new Vector3f(-4.9f, -1.3f, 5.9f); // same as light source
+    private float initialWaterHeight = 40f; // choose a value for your scene
+    private TerrainQuad terrain;
+    private Material mat_terrain;
+    private Node rootNode;
+    private AssetManager assetManager;
+
+    /**
+     * constructor
+     *
+     * @param app
+     */
+    public GameWorld(SimpleApplication app) {
+        this.app = app;
+        this.rootNode = app.getRootNode();
+        this.assetManager = app.getAssetManager();
+    }
+
+    public void init() {
+        this.loadMap();
+        this.addEnvironment();
+    }
+
+    private void loadMap() {
+        /**
+         * 1. Create terrain material and load four textures into it.
+         */
+        mat_terrain = new Material(assetManager, "Common/MatDefs/Terrain/Terrain.j3md");
+
+        /**
+         * 1.1) Add ALPHA map (for red-blue-green coded splat textures)
+         */
+        mat_terrain.setTexture("Alpha", assetManager.loadTexture("Textures/Terrain/splat/alphamap.png"));
+
+        /**
+         * 1.2) Add GRASS texture into the red layer (Tex1).
+         */
+        Texture grass = assetManager.loadTexture(
+                "Textures/Terrain/splat/grass.jpg");
+        grass.setWrap(Texture.WrapMode.Repeat);
+        mat_terrain.setTexture("Tex1", grass);
+        mat_terrain.setFloat("Tex1Scale", 64f);
+
+        /**
+         * 1.3) Add DIRT texture into the green layer (Tex2)
+         */
+        Texture dirt = assetManager.loadTexture(
+                "Textures/Terrain/splat/dirt.jpg");
+        dirt.setWrap(Texture.WrapMode.Repeat);
+        mat_terrain.setTexture("Tex2", dirt);
+        mat_terrain.setFloat("Tex2Scale", 32f);
+
+        /**
+         * 1.4) Add ROAD texture into the blue layer (Tex3)
+         */
+        Texture rock = assetManager.loadTexture(
+                "Textures/Terrain/splat/road.jpg");
+        rock.setWrap(Texture.WrapMode.Repeat);
+        mat_terrain.setTexture("Tex3", rock);
+        mat_terrain.setFloat("Tex3Scale", 128f);
+
+        /**
+         * 2. Create the height map
+         */
+        AbstractHeightMap heightmap = null;
+        Texture heightMapImage = assetManager.loadTexture(
+                "Kiel Hafen 05 - Scaled.png");
+        heightmap = new ImageBasedHeightMap(heightMapImage.getImage());
+        heightmap.load();
+
+        /**
+         * 3. We have prepared material and heightmap. Now we create the actual
+         * terrain: 3.1) Create a TerrainQuad and name it "my terrain". 3.2) A
+         * good value for terrain tiles is 64x64 -- so we supply 64+1=65. 3.3)
+         * We prepared a heightmap of size 512x512 -- so we supply 512+1=513.
+         * 3.4) As LOD step scale we supply Vector3f(1,1,1). 3.5) We supply the
+         * prepared heightmap itself.
+         */
+        int patchSize = 65;
+        terrain = new TerrainQuad("my terrain", patchSize, 1025, heightmap.getHeightMap());
+
+        /**
+         * 4. We give the terrain its material, position & scale it, and attach
+         * it.
+         */
+        terrain.setMaterial(mat_terrain);
+        terrain.setLocalTranslation(0, -100, 0);
+        terrain.setLocalScale(2f, 1f, 2f);
+        rootNode.attachChild(terrain);
+
+        /**
+         * 5. The LOD (level of detail) depends on were the camera is:
+         */
+        TerrainLodControl control = new TerrainLodControl(terrain, app.getCamera());
+        terrain.addControl(control);
+    }
+
+    private void addEnvironment() {
+        // water
+        fpp = new FilterPostProcessor(assetManager);
+        water = new WaterFilter(rootNode, lightDir);
+        water.setWaterHeight(initialWaterHeight);
+        fpp.addFilter(water);
+        app.getViewPort().addProcessor(fpp);
+
+        // Light
+        AmbientLight ambient = new AmbientLight();
+        ambient.setColor(ColorRGBA.White.mult(1.3f));
+        rootNode.addLight(ambient);
+        
+        // haven
+        rootNode.attachChild(SkyFactory.createSky(assetManager, "Textures/Sky/Bright/BrightSky.dds", false));
+    }
+}
