@@ -6,6 +6,8 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.Console;
+import de.lessvoid.nifty.screen.Screen;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -15,7 +17,7 @@ import java.util.logging.Logger;
 import network.NetworkClient;
 
 /**
- * 
+ *
  */
 public class Main extends SimpleApplication {
 
@@ -31,13 +33,15 @@ public class Main extends SimpleApplication {
      * default application settings
      */
     private static final String FILE_NAME = "ClientSettings.properties";
+    private static AppSettings settings;
+    private static NetworkClient nClient;
 
     public static void main(String[] args) {
         Main app = new Main();
 
         // disable startscreen load config from file
         app.setShowSettings(false);
-        AppSettings settings = new AppSettings(true);
+        settings = new AppSettings(true);
         File propertiesFile = new File(FILE_NAME);
         InputStream is = null;
         try {
@@ -63,10 +67,9 @@ public class Main extends SimpleApplication {
         }
 
         app.setSettings(settings);
-        
-        // start network client
-        // new Thread(new NetworkClient(settings)).start();
-        
+        nClient = new NetworkClient(settings);
+        (new Thread(nClient)).start();
+
         app.start();
     }
 
@@ -75,13 +78,12 @@ public class Main extends SimpleApplication {
         // init the Game World
         GameWorld world = new GameWorld(this);
         world.init();
-        
+
         // init screen
         startScreen = new StartScreen(this);
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(assetManager, inputManager, audioRenderer, guiViewPort);
         Nifty nifty = niftyDisplay.getNifty();
         nifty.fromXml("nifty/StartScreen.xml", "StartScreen", startScreen);
-        nifty.addXml("nifty/chat.xml");
         nifty.gotoScreen("StartScreen");
 
         flyCam.setMoveSpeed(25);

@@ -25,6 +25,7 @@ public class NetworkClient implements Runnable{
     public final static String PORT = "Port";
     
     AppSettings settings = null;
+    private static IoSession session;
             
     public NetworkClient(AppSettings settings) {
         this.settings = settings;
@@ -42,7 +43,6 @@ public class NetworkClient implements Runnable{
         connector.getFilterChain().addLast("logger", new LoggingFilter());
         
         connector.setHandler(new ClientSessionHandler());
-        IoSession session;
         for (;;) {
             try {
                 // Hostname = "localhost" und Port = 1234 sollte evtl. irgendwo eingetragen werden
@@ -63,5 +63,7 @@ public class NetworkClient implements Runnable{
         connector.dispose();
     }
     
-    
+    public static IoSession getSession() {
+        return session;
+    }
 }

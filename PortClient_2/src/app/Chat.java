@@ -8,41 +8,41 @@ import com.jme3.asset.AssetManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
+import de.lessvoid.nifty.controls.ChatTextSendEvent;
+import de.lessvoid.nifty.controls.Console;
+import de.lessvoid.nifty.controls.ConsoleExecuteCommandEvent;
 import de.lessvoid.nifty.controls.TextField;
+import de.lessvoid.nifty.controls.chatcontrol.ChatControl;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import info.InfoManager;
 import info.Message;
+import mygame.Main;
 import network.NetworkClient;
 
 /**
  * ScreenController
  *
  */
-public class StartScreen extends AbstractAppState implements ScreenController {
+public class Chat extends AbstractAppState implements ScreenController {
 
     private Node rootNode;
     private Node guiNode;
     private Node localRootNode = new Node("Start Screen RootNode");
     private Node localGuiNode = new Node("Start Screen GuiNode");
-    private SimpleApplication sApp;
     private Application app;
     private Nifty nifty;
     private Screen screen;
     private final AssetManager assetManager;
     private final ViewPort viewPort;
 
-    public StartScreen(SimpleApplication app) {
+    public Chat(SimpleApplication app) {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
         this.app = app;
-        this.sApp = app;
-    }
-
-    public void startGame(String nextScreen) {
-        nifty.gotoScreen(nextScreen);  // switch to another screen
     }
 
     /**
@@ -56,6 +56,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
+        InfoManager.setConsole(screen.findNiftyControl("chatInput", Console.class));
     }
 
     @Override
@@ -78,23 +79,27 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     }
 
     /**
-     * quit the aplication
-     */
-    public void QuitGame() {
-        app.stop();
-    }
-
-    /**
      * change State to AppState
      */
-    public void AppState() {
-        if (screen.getScreenId().equals("StartScreen")) {
-            TextField name = screen.findNiftyControl("nametextfield", TextField.class);
-            InfoManager.setPlayerName(name.getDisplayedText());
-            NetworkClient.getSession().write(new Message(Message.Ident.LOGIN, name.getDisplayedText()));
-            Chat chat = new Chat(sApp);
-            nifty.fromXml("nifty/chat.xml", "ChatScreen", chat);
-            nifty.gotoScreen("ChatScreen");
+    public void sendMessage() {
+        System.out.println("sendMessage");
+        if (screen.getScreenId().equals("ChatScreen")) {
+            TextField input = screen.findNiftyControl("chatInput", TextField.class);
+            //NetworkClient.getSession().write(new info.Message(Message.Ident.LOGIN, name.getDisplayedText()));
+            System.out.println(input.getDisplayedText());
         }
+    }
+
+    @NiftyEventSubscriber(id = "chatInput")
+    public final void onSendText(final String id, final ChatTextSendEvent event) {
+        System.out.println("CHAT CALLBACK " + event.getText());
+        ChatControl ct = event.getChatControl();
+        ct.receivedChatLine(event.getText(), null);
+    }
+
+    @NiftyEventSubscriber(id = "chatInput")
+    public void onConsoleExecuteCommandEvent(final String id, final ConsoleExecuteCommandEvent cEvent) {
+        String consoleInput = cEvent.getCommandLine();
+        NetworkClient.getSession().write(new Message(Message.Ident.TEXT_MESSAGE, consoleInput));
     }
 }
