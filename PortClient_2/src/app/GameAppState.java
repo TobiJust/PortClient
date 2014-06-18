@@ -1,6 +1,5 @@
 package app;
 
-import com.jme3.animation.Animation;
 import com.jme3.app.Application;
 import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
@@ -11,11 +10,14 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.jme3.water.WaterFilter;
+import info.InfoManager;
+import info.VesselInfo;
+import java.util.HashMap;
 import util.GameInputHandler;
 import util.KeyBindings;
 
@@ -37,19 +39,18 @@ public class GameAppState extends AbstractAppState{
     private GameInputHandler gameInputHandler;
     private Player player;
     private Node playerNode;
-    private Spatial sceneModel;
-    private Spatial ship;
+    private Ship ship;
     private WaterFilter water;
     private BulletAppState bulletAppState;
     private RigidBodyControl sceneBody;
     private CharacterControl character;
     boolean up, down, left, right;
-    private KeyBindings keyBindings;
-    private Animation shipAnimation;
     private boolean isFlyByCamera = false;
     private boolean isChat = false;
     private GameWorld world;
     private final Chat chat;
+    private KeyBindings keyBindings;
+    private HashMap<Integer,Ship> allShips = new HashMap<Integer,Ship>();
     
     
     public GameAppState(Chat chat){
@@ -76,17 +77,23 @@ public class GameAppState extends AbstractAppState{
         flyCam.setDragToRotate(false);
         initWorld();
         initPlayer();
+        initShips();
         
     }
     
     @Override
-    public void update(float tpf) {
+    public void update(float tpf) {       
         
         if(!isFlyByCamera)
             player.update(tpf);
-        
-        //        shipAnimation.update();
-        
+//        for(VesselInfo vi : InfoManager.getVesselList()){
+//            Vector3f shipCoordinates = new Vector3f(
+//                    vi.getCoordinates().getX(),
+//                    vi.getCoordinates().getZ(),
+//                    vi.getCoordinates().getY());
+//            allShips.get(vi.getMmsi()).setPosition(shipCoordinates);
+//            System.out.println(" " + vi.getMmsi() + " " + vi.getCoordinates().getX());
+//        }
         
     }
     private void initWorld(){
@@ -100,6 +107,18 @@ public class GameAppState extends AbstractAppState{
         playerNode = player.getPlayerNode();
         character = player.getCharacterControl();
         
+    }
+    public void initShips(){
+        for(VesselInfo vi : InfoManager.getVesselList()){
+            ship = new Ship("ship", this);
+            Vector3f shipCoordinates = new Vector3f(
+                    vi.getCoordinates().getX(),
+                    vi.getCoordinates().getZ(),
+                    vi.getCoordinates().getY());
+            ship.setPosition(shipCoordinates);
+            allShips.put(vi.getMmsi(), ship);
+            
+        }
     }
     public void switchCamera(){
         if(!isFlyByCamera)
@@ -116,7 +135,7 @@ public class GameAppState extends AbstractAppState{
             isChat = true;
         }
         else{
-//            chat.hideChatWindow();
+            //            chat.hideChatWindow();
             isChat = false;
         }
     }
@@ -129,5 +148,8 @@ public class GameAppState extends AbstractAppState{
     }
     public SimpleApplication getApp() {
         return this.app;
+    }
+    public float getTimePerFrame(){
+        return this.app.getTimer().getTimePerFrame();
     }
 }

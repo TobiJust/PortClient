@@ -11,7 +11,7 @@ public class VesselInfo implements Serializable{
 	private String name;
 	private String type;
 	
-	public VesselInfo(int mmsi, String name, double x, double y, double z, String type, double course, double speed){
+	public VesselInfo(int mmsi, String name, float x, float y, float z, String type, double course, double speed){
 		this.setMmsi(mmsi);
 		this.setCoordinates(new Point3D(x, y, z));
 		this.setName(name);

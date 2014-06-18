@@ -29,8 +29,6 @@ public class Player implements Serializable{
     private Camera cam;
     /** Position of the player */
     private Vector3f position;
-    /** the world in which the player acting */
-    public GameWorld world;
     
     /**
      * boolean variable used by the input handler to set the movement to perform

@@ -26,12 +26,13 @@ public class GameWorld extends AbstractAppState{
     private FilterPostProcessor fpp;
     private WaterFilter water;
     private Vector3f sunDirection = new Vector3f(-0.1f, -0.7f, -1.0f); // same as light source
-    private float initialWaterHeight = 40f; // choose a value for your scene
+    private float initialWaterHeight = 0f; // choose a value for your scene
     private TerrainQuad terrain;
     private Material mat_terrain;
     private Node rootNode;
     private AssetManager assetManager;
     private BulletAppState bulletAppState;
+    private final GameAppState appState;
     
     /**
      * constructor
@@ -40,6 +41,7 @@ public class GameWorld extends AbstractAppState{
      */
     public GameWorld(GameAppState appState) {
         this.app = appState.getApp();
+        this.appState = appState;
         this.rootNode = app.getRootNode();
         this.assetManager = app.getAssetManager();
         
@@ -48,12 +50,20 @@ public class GameWorld extends AbstractAppState{
     
     public void init() {
         this.loadWorld();
+        this.loadShips();
         this.addEnvironment();
     }
     
     private void loadWorld() {
         
-        Model scene = new Model("assets/Models/Insel_oben.zip","insel_oben.scene", this);
+        Model scene = new Model("assets/Models/Insel_oben.zip","insel_oben.scene", this.appState);
+        scene.setPosition(0, -40f, 0);
+    }
+    
+    private void loadShips(){
+        Model oel_tanker = new Model("assets/Models/oel_tanker.zip","oel_tanker/oel_tanker.scene", this.appState);
+        oel_tanker.setPosition(100, 0, 0);
+        
     }
     
     private void addEnvironment() {

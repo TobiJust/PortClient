@@ -4,7 +4,7 @@
  */
 package util;
 
-import app.GameWorld;
+import app.GameAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.asset.plugins.ZipLocator;
 import com.jme3.bullet.BulletAppState;
@@ -23,7 +23,6 @@ import java.io.Serializable;
  */
 public class Model implements Serializable{
     
-    private GameWorld world;
     private AssetManager assetManager;
     private BulletAppState bulletAppState;
     private Node rootNode;
@@ -31,11 +30,10 @@ public class Model implements Serializable{
     private float scale = 1f;
     private Vector3f position = new Vector3f(0f, 0f, 0f);
     
-    public Model(String filePath, String sceneName, GameWorld world){
-        this.world = world;
-        this.assetManager = world.getApp().getAssetManager();
-        this.bulletAppState = world.getBulletAppState();
-        this.rootNode = world.getApp().getRootNode();
+    public Model(String filePath, String sceneName, GameAppState appState){
+        this.assetManager = appState.getApp().getAssetManager();
+        this.bulletAppState = appState.getBulletAppState();
+        this.rootNode = appState.getApp().getRootNode();
         
         // We load the scene from the zip file and adjust its size.
         if(filePath != null)

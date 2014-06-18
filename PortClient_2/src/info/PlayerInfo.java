@@ -10,7 +10,7 @@ public class PlayerInfo implements Serializable{
 	private String name;
 	private State state;
 	
-	public PlayerInfo(String name, double x, double y, double z, State state){
+	public PlayerInfo(String name, float x, float y, float z, State state){
 		this.setCoordinates(new Point3D(x, y, z));
 		this.setName(name);
 		this.setState(state);
