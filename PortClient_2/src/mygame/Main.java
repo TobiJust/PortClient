@@ -1,5 +1,6 @@
 package mygame;
 
+import app.CustomFlyByCamera;
 import app.StartScreen;
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
@@ -12,6 +13,7 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.NetworkClient;
+import util.KeyBindings;
 
 /**
  *
@@ -32,6 +34,7 @@ public class Main extends SimpleApplication {
     private static final String FILE_NAME = "ClientSettings.properties";
     private static AppSettings settings;
     private static NetworkClient nClient;
+    private CustomFlyByCamera customFlyCam;
 
     public static void main(String[] args) {
         Main app = new Main();
@@ -79,9 +82,19 @@ public class Main extends SimpleApplication {
         Nifty nifty = niftyDisplay.getNifty();
         nifty.fromXml("nifty/StartScreen.xml", "StartScreen", startScreen);
         nifty.gotoScreen("StartScreen");
-
-        flyCam.setMoveSpeed(25);
-        flyCam.setDragToRotate(true);
+        
+        // remove the original fly cam
+	inputManager.removeListener(flyCam);
+        inputManager.addMapping("Camera", KeyBindings.CAMERA_CHANGE);
+	customFlyCam = new CustomFlyByCamera(cam);
+	customFlyCam.setMoveSpeed(1f);
+	customFlyCam.registerWithInput(inputManager);
+	customFlyCam.setDragToRotate(true);
+        
         guiViewPort.addProcessor(niftyDisplay);
+    }
+    
+    public CustomFlyByCamera getCustomFlyByCamera() {
+        return customFlyCam;
     }
 }

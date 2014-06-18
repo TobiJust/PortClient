@@ -8,7 +8,6 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.input.FlyByCamera;
 import com.jme3.input.InputManager;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
@@ -19,6 +18,7 @@ import info.InfoManager;
 import info.PlayerInfo;
 import info.VesselInfo;
 import java.util.HashMap;
+import mygame.Main;
 import util.GameInputHandler;
 import util.KeyBindings;
 
@@ -47,7 +47,7 @@ public class GameAppState extends AbstractAppState {
     private CharacterControl character;
     boolean up, down, left, right;
     private boolean isFlyByCamera = false;
-    private boolean isChat = false;
+    private boolean isChat = true;
     private GameWorld world;
     private final Chat chat;
     private KeyBindings keyBindings;
@@ -68,24 +68,23 @@ public class GameAppState extends AbstractAppState {
         this.stateManager = stateManager;
         this.app = (SimpleApplication) app;
         this.cam = this.app.getCamera();
-        this.flyCam = (CustomFlyByCamera) this.app.getFlyByCamera();
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort = this.app.getViewPort();
         keyBindings = new KeyBindings();
         gameInputHandler = new GameInputHandler(this);
+        this.flyCam = ((Main) this.app).getCustomFlyByCamera();
 
-        flyCam.setDragToRotate(false);
         initWorld();
         initPlayer();
         initShips();
-
     }
 
     @Override
     public void update(float tpf) {
-        player.update(tpf);
+        if(!isFlyByCamera)
+            player.update(tpf);
 
         for (PlayerInfo pi : InfoManager.getPlayerList()) {
             if (!allPlayers.containsKey(pi.getName())) {
@@ -156,14 +155,19 @@ public class GameAppState extends AbstractAppState {
     }
 
     public void switchCamera() {
+        System.out.println("SWITCH CAMERA: " + isFlyByCamera);
         if (!isFlyByCamera) {
             isFlyByCamera = true;
         } else {
             isFlyByCamera = false;
+            Vector3f location = new Vector3f(InfoManager.getPlayer().getCoordinates().getX(), 
+                                            InfoManager.getPlayer().getCoordinates().getY(),
+                                            InfoManager.getPlayer().getCoordinates().getZ());
+            playerNode.setLocalTranslation(location);
+            this.cam.setLocation(location);
+            player.getCharacterControl().setPhysicsLocation(location);
         }
-
         this.flyCam.setMoveSpeed(150f);
-
     }
 
     public void toggleChat() {

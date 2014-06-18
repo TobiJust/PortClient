@@ -189,6 +189,8 @@ public class Player implements Serializable{
         this.position = position;
     }
     
-    
+    public CharacterControl getPlayer() {
+        return this.player;
+    }
     
 }
