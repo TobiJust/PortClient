@@ -1,13 +1,10 @@
 package mygame;
 
-import app.GameWorld;
 import app.StartScreen;
 import com.jme3.app.SimpleApplication;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
-import de.lessvoid.nifty.controls.Console;
-import de.lessvoid.nifty.screen.Screen;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;

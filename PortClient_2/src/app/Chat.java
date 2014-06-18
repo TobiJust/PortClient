@@ -16,9 +16,9 @@ import de.lessvoid.nifty.controls.TextField;
 import de.lessvoid.nifty.controls.chatcontrol.ChatControl;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
+import de.lessvoid.nifty.tools.Color;
 import info.InfoManager;
 import info.Message;
-import mygame.Main;
 import network.NetworkClient;
 
 /**
@@ -108,9 +108,10 @@ public class Chat extends AbstractAppState implements ScreenController {
     }
     
     public void hideChatWindow(){
-        InfoManager.getConsole().getElement().hide();
+        InfoManager.getConsole().disable();
     }
     public void showChatWindow(){
+        InfoManager.getConsole().enable();
         InfoManager.getConsole().getElement().show();
         InfoManager.getConsole().getTextField().setFocus();
     }
