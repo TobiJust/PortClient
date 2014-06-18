@@ -31,7 +31,7 @@ public class GameAppState extends AbstractAppState {
 
     private SimpleApplication app;
     private Camera cam;
-    private FlyByCamera flyCam;
+    private CustomFlyByCamera flyCam;
     private Node rootNode;
     private AssetManager assetManager;
     private InputManager inputManager;
@@ -68,7 +68,7 @@ public class GameAppState extends AbstractAppState {
         this.stateManager = stateManager;
         this.app = (SimpleApplication) app;
         this.cam = this.app.getCamera();
-        this.flyCam = this.app.getFlyByCamera();
+        this.flyCam = (CustomFlyByCamera) this.app.getFlyByCamera();
         this.rootNode = this.app.getRootNode();
         this.assetManager = this.app.getAssetManager();
         this.inputManager = this.app.getInputManager();
@@ -85,10 +85,7 @@ public class GameAppState extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-
-        if (!isFlyByCamera) {
-            player.update(tpf);
-        }
+        player.update(tpf);
 
         for (PlayerInfo pi : InfoManager.getPlayerList()) {
             if (!allPlayers.containsKey(pi.getName())) {
@@ -98,13 +95,12 @@ public class GameAppState extends AbstractAppState {
                         pi.getCoordinates().getZ());
                 pm.setPosition(playerCoords);
                 allPlayers.put(pi.getName(), pm);
-            }
-            else {
+            } else {
                 allPlayers.get(pi.getName()).setPosition(new Vector3f(pi.getCoordinates().getX(),
                         pi.getCoordinates().getY(),
                         pi.getCoordinates().getZ()));
             }
-            
+
         }
 
         for (VesselInfo vi : InfoManager.getVesselList()) {
@@ -116,8 +112,7 @@ public class GameAppState extends AbstractAppState {
                         vi.getCoordinates().getY());
                 ship.setPosition(shipCoordinates);
                 allShips.put(vi.getMmsi(), ship);
-            }
-            else {
+            } else {
                 allShips.get(vi.getMmsi()).setPosition(new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
@@ -196,7 +191,7 @@ public class GameAppState extends AbstractAppState {
     public float getTimePerFrame() {
         return this.app.getTimer().getTimePerFrame();
     }
-    
+
     public HashMap<Integer, Ship> getAllShips() {
         return allShips;
     }
