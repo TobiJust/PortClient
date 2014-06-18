@@ -14,8 +14,25 @@ import java.util.ArrayList;
 public class InfoManager {
     
     private static Console console;
-    private static String playerName;
     private static ArrayList<VesselInfo> vesselList;
+    private static ArrayList<PlayerInfo> playerList;
+    private static PlayerInfo player;
+
+    public static ArrayList<PlayerInfo> getPlayerList() {
+        return playerList;
+    }
+
+    public static void setPlayerList(ArrayList<PlayerInfo> playerList) {
+        InfoManager.playerList = playerList;
+    }
+    
+    public static PlayerInfo getPlayer() {
+        return player;
+    }
+
+    public static void setPlayer(PlayerInfo player) {
+        InfoManager.player = player;
+    }
     
     public static Console getConsole() {
         return console;
@@ -23,14 +40,6 @@ public class InfoManager {
     
     public static void setConsole(Console console) {
         InfoManager.console = console;
-    }
-    
-    public static String getPlayerName() {
-        return playerName;
-    }
-    
-    public static void setPlayerName(String playerName) {
-        InfoManager.playerName = playerName;
     }
     
     public static void setVesselList(ArrayList<VesselInfo> vesselList){

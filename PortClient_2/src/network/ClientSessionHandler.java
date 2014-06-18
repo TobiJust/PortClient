@@ -4,7 +4,8 @@ import de.lessvoid.nifty.controls.Console;
 import info.Info;
 import info.InfoManager;
 import info.Message;
-import info.VesselInfo;
+import info.PlayerInfo;
+import java.util.ArrayList;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 
@@ -30,8 +31,12 @@ public class ClientSessionHandler extends IoHandlerAdapter {
                 break;
             case INFO_ALL:
 //                System.out.println("INFO_ALL");
-                Info ofn = (Info) msg.getContent();
-                InfoManager.setVesselList(ofn.getVesselList());
+                Info info = (Info) msg.getContent();
+                ArrayList<PlayerInfo> playerList = info.getPlayerList();
+                playerList.remove(InfoManager.getPlayer());
+                InfoManager.setPlayerList(playerList);
+                // TODO: paint players
+                InfoManager.setVesselList(info.getVesselList());
                 // TODO: getVesselList XYZ setzen
                 break;
             case LOGIN:
@@ -44,7 +49,7 @@ public class ClientSessionHandler extends IoHandlerAdapter {
                 Console con = InfoManager.getConsole();
                 if (con != null) {
                     String chat = (String) msg.getContent();
-                    if (!chat.substring(0, chat.indexOf(":")).equals(InfoManager.getPlayerName())) {
+                    if (!chat.substring(0, chat.indexOf(":")).equals(InfoManager.getPlayer().getName())) {
                         con.output(chat);
                     }
                 }

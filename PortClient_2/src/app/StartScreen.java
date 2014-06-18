@@ -15,6 +15,7 @@ import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import info.InfoManager;
 import info.Message;
+import info.PlayerInfo;
 import network.NetworkClient;
 
 /**
@@ -101,7 +102,7 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void AppState() {
         if (screen.getScreenId().equals("StartScreen")) {
             TextField name = screen.findNiftyControl("nametextfield", TextField.class);
-            InfoManager.setPlayerName(name.getDisplayedText());
+            InfoManager.setPlayer(new PlayerInfo(name.getDisplayedText(), 0, 0, 0, PlayerInfo.State.WALKING));
             NetworkClient.getSession().write(new Message(Message.Ident.LOGIN, name.getDisplayedText()));
             Chat chat = new Chat(sApp);
             nifty.fromXml("nifty/chat.xml", "ChatScreen", chat);
