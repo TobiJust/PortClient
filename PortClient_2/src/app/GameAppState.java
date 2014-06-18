@@ -82,18 +82,20 @@ public class GameAppState extends AbstractAppState{
     }
     
     @Override
-    public void update(float tpf) {       
+    public void update(float tpf) {
         
-        if(!isFlyByCamera)
+        System.out.println("UPDATE " +InfoManager.getVesselList().size());
+        
+        if(!isFlyByCamera){
             player.update(tpf);
-//        for(VesselInfo vi : InfoManager.getVesselList()){
-//            Vector3f shipCoordinates = new Vector3f(
-//                    vi.getCoordinates().getX(),
-//                    vi.getCoordinates().getZ(),
-//                    vi.getCoordinates().getY());
-//            allShips.get(vi.getMmsi()).setPosition(shipCoordinates);
-//            System.out.println(" " + vi.getMmsi() + " " + vi.getCoordinates().getX());
-//        }
+        }
+        
+        for(VesselInfo vi : InfoManager.getVesselList()){
+            allShips.get(vi.getMmsi()).setPosition(
+                    vi.getCoordinates().getX(),
+                    vi.getCoordinates().getZ(),
+                    vi.getCoordinates().getY());
+        }
         
     }
     private void initWorld(){
@@ -111,11 +113,10 @@ public class GameAppState extends AbstractAppState{
     public void initShips(){
         for(VesselInfo vi : InfoManager.getVesselList()){
             ship = new Ship("ship", this);
-            Vector3f shipCoordinates = new Vector3f(
+            ship.setPosition(
                     vi.getCoordinates().getX(),
                     vi.getCoordinates().getZ(),
                     vi.getCoordinates().getY());
-            ship.setPosition(shipCoordinates);
             allShips.put(vi.getMmsi(), ship);
             
         }
@@ -151,5 +152,9 @@ public class GameAppState extends AbstractAppState{
     }
     public float getTimePerFrame(){
         return this.app.getTimer().getTimePerFrame();
+    }
+    
+    public HashMap<Integer, Ship> getAllShips() {
+        return allShips;
     }
 }

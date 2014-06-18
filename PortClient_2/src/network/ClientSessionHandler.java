@@ -4,6 +4,7 @@ import de.lessvoid.nifty.controls.Console;
 import info.Info;
 import info.InfoManager;
 import info.Message;
+import info.VesselInfo;
 import org.apache.mina.core.service.IoHandlerAdapter;
 import org.apache.mina.core.session.IoSession;
 

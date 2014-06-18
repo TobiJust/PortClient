@@ -8,7 +8,9 @@ import com.jme3.asset.AssetManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.TextField;
+import de.lessvoid.nifty.input.NiftyInputEvent;
 import de.lessvoid.nifty.screen.Screen;
 import de.lessvoid.nifty.screen.ScreenController;
 import info.InfoManager;
@@ -80,8 +82,14 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void onEndScreen() {
     }
     
+    @NiftyEventSubscriber(id = "nametextfield")
+    public void onTextFieldInputEvent(final String id, final NiftyInputEvent event){
+        if(NiftyInputEvent.SubmitText.equals(event)){
+            AppState();
+        }
+    }
     /**
-     * quit the aplication
+     * quit the application
      */
     public void QuitGame() {
         app.stop();

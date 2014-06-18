@@ -34,10 +34,11 @@ public class InfoManager {
     }
     
     public static void setVesselList(ArrayList<VesselInfo> vesselList){
+        
         InfoManager.vesselList = vesselList;
     }
     
     public static ArrayList<VesselInfo> getVesselList(){
-        return InfoManager.vesselList;
+        return vesselList;
     }
 }

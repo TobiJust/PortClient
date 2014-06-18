@@ -106,13 +106,9 @@ public class Player implements Serializable{
      */
     private void updateMovements() {
         
-        Vector3f prevLoc = new Vector3f(playerNode.getLocalTranslation());
-        Vector3f loc = new Vector3f(prevLoc);
-        
         camDir.set(cam.getDirection()).multLocal(0.8f);
         walkDirection.set(0, 0, 0);
-        walkDirection.addLocal(camDir);
-        
+        walkDirection.addLocal(camDir);        
         
         camDir.set(cam.getDirection()).multLocal(0.8f);
         camLeft.set(cam.getLeft()).multLocal(0.4f);

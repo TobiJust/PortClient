@@ -8,6 +8,7 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -81,9 +82,9 @@ public class GameWorld extends AbstractAppState{
     }
     private void addLight(){
         // Light
-        //        AmbientLight ambient = new AmbientLight();
-        //        ambient.setColor(ColorRGBA.White.mult(1.3f));
-        //        rootNode.addLight(ambient);
+                AmbientLight ambient = new AmbientLight();
+                ambient.setColor(ColorRGBA.White.mult(1.3f));
+                rootNode.addLight(ambient);
         
         // Sun Light
         DirectionalLight sun = new DirectionalLight();

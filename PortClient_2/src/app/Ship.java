@@ -56,5 +56,9 @@ public class Ship implements Serializable{
         shipModel.setPosition(position.x, position.y, position.z);
         this.position = position;
     }
+    public void setPosition(float x, float y, float z){
+        shipModel.setPosition(x, y, z);
+        this.position = new Vector3f(x,y,z);
+    }
     
 }
