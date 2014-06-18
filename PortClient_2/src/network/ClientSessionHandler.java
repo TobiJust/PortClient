@@ -29,7 +29,8 @@ public class ClientSessionHandler extends IoHandlerAdapter {
                 break;
             case INFO_ALL:
                 System.out.println("INFO_ALL");
-                Info ofn = (Info) msg.getContent();
+                System.out.println(msg.getContent());
+                //Info ofn = (Info) msg.getContent();
                 // TODO: getVesselList XYZ setzen
                 break;
             case LOGIN:

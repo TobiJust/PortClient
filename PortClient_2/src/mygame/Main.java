@@ -75,9 +75,6 @@ public class Main extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
-        // init the Game World
-        GameWorld world = new GameWorld(this);
-        world.init();
 
         // init screen
         startScreen = new StartScreen(this);

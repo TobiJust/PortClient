@@ -20,7 +20,7 @@ import network.NetworkClient;
  *
  */
 public class StartScreen extends AbstractAppState implements ScreenController {
-
+    
     private Node rootNode;
     private Node guiNode;
     private Node localRootNode = new Node("Start Screen RootNode");
@@ -31,20 +31,22 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     private Screen screen;
     private final AssetManager assetManager;
     private final ViewPort viewPort;
-
+    private final AppStateManager stateManager;
+    
     public StartScreen(SimpleApplication app) {
         this.rootNode = app.getRootNode();
         this.viewPort = app.getViewPort();
         this.guiNode = app.getGuiNode();
         this.assetManager = app.getAssetManager();
+        this.stateManager = app.getStateManager();
         this.app = app;
         this.sApp = app;
     }
-
+    
     public void startGame(String nextScreen) {
         nifty.gotoScreen(nextScreen);  // switch to another screen
     }
-
+    
     /**
      * jME3 AppState methods
      */
@@ -52,38 +54,39 @@ public class StartScreen extends AbstractAppState implements ScreenController {
     public void initialize(AppStateManager stateManager, Application app) {
         this.app = app;
     }
-
+    
     public void bind(Nifty nifty, Screen screen) {
         this.nifty = nifty;
         this.screen = screen;
     }
-
+    
     @Override
     public void update(float tpf) {
+        System.out.println("UPDATE");
         if (screen.getScreenId().equals("hud")) {
         }
     }
-
+    
     @Override
     public void cleanup() {
         rootNode.detachChild(localRootNode);
         guiNode.detachChild(localGuiNode);
         super.cleanup();
     }
-
+    
     public void onStartScreen() {
     }
-
+    
     public void onEndScreen() {
     }
-
+    
     /**
      * quit the aplication
      */
     public void QuitGame() {
         app.stop();
     }
-
+    
     /**
      * change State to AppState
      */
@@ -95,6 +98,9 @@ public class StartScreen extends AbstractAppState implements ScreenController {
             Chat chat = new Chat(sApp);
             nifty.fromXml("nifty/chat.xml", "ChatScreen", chat);
             nifty.gotoScreen("ChatScreen");
+            
+            GameAppState gameAppState = new GameAppState(chat);
+            stateManager.attach(gameAppState);
         }
     }
 }

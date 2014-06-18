@@ -5,11 +5,9 @@
 
     <screen id="ChatScreen" controller="app.Chat">
         <layer id="foreground" childLayout="center" >
-            <panel width="80%" height="50%" align="center" valign="bottom" childLayout="vertical" backgroundColor="#ffffff20" padding="10">
-                <control id="chatInput" name="nifty-console" width="100%" height="100%" align="center" valign="bottom" color="#ffffff20" lines="10" sendLabel="Send Message" >
+                <control id="chatInput" name="nifty-console" width="50%" height="30%" align="center" valign="bottom" color="#11ffff20" lines="10" sendLabel="Send Message" >
                     <interact onClick="sendMessage()"/>
                 </control>
-            </panel>
         </layer>
     </screen>
 </nifty>
