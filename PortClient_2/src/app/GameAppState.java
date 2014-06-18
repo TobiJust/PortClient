@@ -16,6 +16,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.water.WaterFilter;
 import info.InfoManager;
+import info.PlayerInfo;
 import info.VesselInfo;
 import java.util.HashMap;
 import util.GameInputHandler;
@@ -25,9 +26,9 @@ import util.KeyBindings;
  *
  * @author Just
  */
-public class GameAppState extends AbstractAppState{
+public class GameAppState extends AbstractAppState {
     /* AppState specific */
-    
+
     private SimpleApplication app;
     private Camera cam;
     private FlyByCamera flyCam;
@@ -50,19 +51,20 @@ public class GameAppState extends AbstractAppState{
     private GameWorld world;
     private final Chat chat;
     private KeyBindings keyBindings;
-    private HashMap<Integer,Ship> allShips = new HashMap<Integer,Ship>();
-    
-    
-    public GameAppState(Chat chat){
+    private HashMap<Integer, Ship> allShips = new HashMap<Integer, Ship>();
+    private static HashMap<String, PlayerModel> allPlayers = new HashMap<String, PlayerModel>();
+
+    public GameAppState(Chat chat) {
         this.chat = chat;
     }
     /* GUI Elements */
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
-        
+
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        
+
         this.stateManager = stateManager;
         this.app = (SimpleApplication) app;
         this.cam = this.app.getCamera();
@@ -73,19 +75,56 @@ public class GameAppState extends AbstractAppState{
         this.viewPort = this.app.getViewPort();
         keyBindings = new KeyBindings();
         gameInputHandler = new GameInputHandler(this);
-        
+
         flyCam.setDragToRotate(false);
         initWorld();
         initPlayer();
         initShips();
-        
+
     }
-    
+
     @Override
-    public void update(float tpf) {       
-        
-        if(!isFlyByCamera)
+    public void update(float tpf) {
+
+        if (!isFlyByCamera) {
             player.update(tpf);
+        }
+
+        for (PlayerInfo pi : InfoManager.getPlayerList()) {
+            if (!allPlayers.containsKey(pi.getName())) {
+                PlayerModel pm = new PlayerModel("player", this);
+                Vector3f playerCoords = new Vector3f(pi.getCoordinates().getX(),
+                        pi.getCoordinates().getY(),
+                        pi.getCoordinates().getZ());
+                pm.setPosition(playerCoords);
+                allPlayers.put(pi.getName(), pm);
+            }
+            else {
+                allPlayers.get(pi.getName()).setPosition(new Vector3f(pi.getCoordinates().getX(),
+                        pi.getCoordinates().getY(),
+                        pi.getCoordinates().getZ()));
+            }
+            
+        }
+
+        for (VesselInfo vi : InfoManager.getVesselList()) {
+            if (!allShips.containsKey(vi.getMmsi())) {
+                ship = new Ship("ship", this);
+                Vector3f shipCoordinates = new Vector3f(
+                        vi.getCoordinates().getX(),
+                        vi.getCoordinates().getZ(),
+                        vi.getCoordinates().getY());
+                ship.setPosition(shipCoordinates);
+                allShips.put(vi.getMmsi(), ship);
+            }
+            else {
+                allShips.get(vi.getMmsi()).setPosition(new Vector3f(
+                        vi.getCoordinates().getX(),
+                        vi.getCoordinates().getZ(),
+                        vi.getCoordinates().getY()));
+            }
+        }
+
 //        for(VesselInfo vi : InfoManager.getVesselList()){
 //            Vector3f shipCoordinates = new Vector3f(
 //                    vi.getCoordinates().getX(),
@@ -94,22 +133,34 @@ public class GameAppState extends AbstractAppState{
 //            allShips.get(vi.getMmsi()).setPosition(shipCoordinates);
 //            System.out.println(" " + vi.getMmsi() + " " + vi.getCoordinates().getX());
 //        }
-        
+
     }
-    private void initWorld(){
+
+    private void initWorld() {
         // init the Game World
         world = new GameWorld(this);
         world.init();
     }
-    
+
     private void initPlayer() {
         player = new Player("player", this);
         playerNode = player.getPlayerNode();
         character = player.getCharacterControl();
-        
     }
-    public void initShips(){
-        for(VesselInfo vi : InfoManager.getVesselList()){
+
+    public void initPlayers() {
+        for (PlayerInfo pi : InfoManager.getPlayerList()) {
+            PlayerModel pm = new PlayerModel("player", this);
+            Vector3f playerCoords = new Vector3f(pi.getCoordinates().getX(),
+                    pi.getCoordinates().getY(),
+                    pi.getCoordinates().getZ());
+            pm.setPosition(playerCoords);
+            allPlayers.put(pi.getName(), pm);
+        }
+    }
+
+    public void initShips() {
+        for (VesselInfo vi : InfoManager.getVesselList()) {
             ship = new Ship("ship", this);
             Vector3f shipCoordinates = new Vector3f(
                     vi.getCoordinates().getX(),
@@ -117,39 +168,43 @@ public class GameAppState extends AbstractAppState{
                     vi.getCoordinates().getY());
             ship.setPosition(shipCoordinates);
             allShips.put(vi.getMmsi(), ship);
-            
         }
     }
-    public void switchCamera(){
-        if(!isFlyByCamera)
+
+    public void switchCamera() {
+        if (!isFlyByCamera) {
             isFlyByCamera = true;
-        else
+        } else {
             isFlyByCamera = false;
-        
+        }
+
         this.flyCam.setMoveSpeed(150f);
-        
+
     }
+
     public void toggleChat() {
-        if(!isChat){
+        if (!isChat) {
             chat.showChatWindow();
             isChat = true;
-        }
-        else{
+        } else {
             //            chat.hideChatWindow();
             isChat = false;
         }
     }
-    
+
     public BulletAppState getBulletAppState() {
         return this.bulletAppState;
     }
-    public Player getPlayer(){
+
+    public Player getPlayer() {
         return player;
     }
+
     public SimpleApplication getApp() {
         return this.app;
     }
-    public float getTimePerFrame(){
+
+    public float getTimePerFrame() {
         return this.app.getTimer().getTimePerFrame();
     }
 }

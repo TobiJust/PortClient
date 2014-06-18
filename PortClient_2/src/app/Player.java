@@ -6,6 +6,9 @@ import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+import info.InfoManager;
+import info.PlayerInfo;
+import info.Point3D;
 import java.io.Serializable;
 
 /**
@@ -60,7 +63,6 @@ public class Player implements Serializable{
     }
     
     private void createPlayer() {
-        
         playerNode = new Node("player");
         //player = new BetterCharacterControl(0.3f, 2.8f, 70f);
         
@@ -134,7 +136,12 @@ public class Player implements Serializable{
         walkDirection.setY(0);
         player.setWalkDirection(walkDirection);
         app.getCamera().setLocation(player.getPhysicsLocation());
-        
+        Point3D playerPos = new Point3D(player.getPhysicsLocation().getX(), 
+                                        player.getPhysicsLocation().getY(), 
+                                        player.getPhysicsLocation().getZ());
+        PlayerInfo playerInfo = InfoManager.getPlayer();
+        playerInfo.setCoordinates(playerPos);
+        InfoManager.setPlayer(playerInfo);
     }
     
     
