@@ -40,4 +40,17 @@ public class PlayerInfo implements Serializable{
 		this.state = state;
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		PlayerInfo pi = (PlayerInfo)obj;
+		return this.getName().equals(pi.getName());
+	}
+
+	@Override
+	public int hashCode() {
+		return this.getName().hashCode();
+	}
+	
+	
+
 }
