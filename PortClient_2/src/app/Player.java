@@ -7,9 +7,11 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import info.InfoManager;
+import info.Message;
 import info.PlayerInfo;
 import info.Point3D;
 import java.io.Serializable;
+import network.NetworkClient;
 
 /**
  * Class
@@ -142,6 +144,7 @@ public class Player implements Serializable{
         PlayerInfo playerInfo = InfoManager.getPlayer();
         playerInfo.setCoordinates(playerPos);
         InfoManager.setPlayer(playerInfo);
+        NetworkClient.getSession().write(new Message(Message.Ident.PLAYER_POSITION, playerInfo));
     }
     
     
