@@ -19,7 +19,7 @@ public class PlayerModel {
     
     /** the character identifier  */
     public String id;
-     /** the graphical app in which the character live */
+    /** the graphical app in which the character live */
     private GameAppState appState;
     private final SimpleApplication app;
     private Node playerNode;
@@ -36,16 +36,14 @@ public class PlayerModel {
         
         createPlayerModel();
     }
-
+    
     private void createPlayerModel() {
-         playerNode = new Node("player");
-        //player = new BetterCharacterControl(0.3f, 2.8f, 70f);
-         
-        CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 1.8f, 2);
+        playerNode = new Node("player");
+        
         playerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
-        flyPlayerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
+        flyPlayerModel = new Model("assets/Models/Figur2.zip","Figur2.mesh.xml", this.appState);
         playerModel.setPosition((float) (Math.random()*100), 0, 0);
-        player = playerModel.getModel();
+        player = flyPlayerModel.getModel();
         
         appState.getBulletAppState().getPhysicsSpace().add(player);
         app.getRootNode().attachChild(playerNode);
@@ -58,6 +56,13 @@ public class PlayerModel {
     public PlayerModel flyPlayer(){
         playerModel = flyPlayerModel;
         player = flyPlayerModel.getModel();
+        
+        return this;
+    }
+    
+    public PlayerModel groundPlayer() {
+        playerModel = playerModel;
+        player = playerModel.getModel();
         
         return this;
     }

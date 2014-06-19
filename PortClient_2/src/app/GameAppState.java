@@ -100,10 +100,10 @@ public class GameAppState extends AbstractAppState {
                 allPlayers.put(pi.getName(), pm);
             } else {
                 PlayerModel pm = allPlayers.get(pi.getName());
-                if(pi.getState().equals(PlayerInfo.State.FLYING)){
+                if(pi.getState().equals(PlayerInfo.State.FLYING))
                     pm = pm.flyPlayer();
-                    System.out.println("IS FLYING CHARACTER");
-                }
+                else
+                    pm = pm.groundPlayer();
                 pm.setPosition(new Vector3f(pi.getCoordinates().getX(),
                         pi.getCoordinates().getY(),
                         pi.getCoordinates().getZ()));
