@@ -25,6 +25,7 @@ public class PlayerModel {
     private Node playerNode;
     private Model playerModel;
     private Model flyPlayerModel;
+    private Model groundPlayerModel;
     private Spatial player;
     private Vector3f position;
     
@@ -40,8 +41,9 @@ public class PlayerModel {
     private void createPlayerModel() {
         playerNode = new Node("player");
         
-        playerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
+        groundPlayerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
         flyPlayerModel = new Model("assets/Models/Figur2.zip","Figur2.mesh.xml", this.appState);
+        playerModel = groundPlayerModel;
         playerModel.setPosition((float) (Math.random()*100), 0, 0);
         player = flyPlayerModel.getModel();
         
@@ -61,7 +63,7 @@ public class PlayerModel {
     }
     
     public PlayerModel groundPlayer() {
-        playerModel = playerModel;
+        playerModel = groundPlayerModel;
         player = playerModel.getModel();
         
         return this;

@@ -42,8 +42,9 @@ public class Ship implements Serializable{
     private void createShip() {
         shipNode = new Node("ship");
         
-        int n = (int)(Math.random()*allModels.size());
         //TODO: Model aus vorhandenen wählen
+//        int n = (int)(Math.random()*allModels.size());
+        //shipModel = allModels.get(n);
         shipModel = new Model("assets/Models/yacht_1.zip","yacht_1/yacht_1.scene", this.appState);;
         shipModel.setPosition((float) (Math.random()*100), 0, 0);
         ship = shipModel.getModel();
@@ -51,10 +52,12 @@ public class Ship implements Serializable{
         appState.getBulletAppState().getPhysicsSpace().add(ship);
         app.getRootNode().attachChild(shipNode);
     }
+    
     public void setPosition(Vector3f position){
         shipModel.setPosition(position.x, position.y, position.z);
         this.position = position;
     }
+    
     public void setPosition(float x, float y, float z){
         shipModel.setPosition(x, y, z);
         this.position = new Vector3f(x,y,z);
