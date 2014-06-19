@@ -85,11 +85,7 @@ public class Main extends SimpleApplication {
         
         // remove the original fly cam
 	inputManager.removeListener(flyCam);
-        inputManager.addMapping("Camera", KeyBindings.CAMERA_CHANGE);
-	customFlyCam = new CustomFlyByCamera(cam);
-	customFlyCam.setMoveSpeed(1f);
-	customFlyCam.registerWithInput(inputManager);
-	customFlyCam.setDragToRotate(true);
+	flyCam.setDragToRotate(true);
         
         guiViewPort.addProcessor(niftyDisplay);
     }

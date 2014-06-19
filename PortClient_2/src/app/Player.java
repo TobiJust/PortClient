@@ -105,7 +105,6 @@ public class Player implements Serializable{
         //        app.getWorld().setPosition(id, playerNode.getWorldTranslation());
         
     }
-    
     /**
      */
     private void updateMovements() {

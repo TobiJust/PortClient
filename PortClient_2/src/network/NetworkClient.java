@@ -13,6 +13,7 @@ import org.apache.mina.filter.codec.serialization.ObjectSerializationCodecFactor
 import org.apache.mina.filter.logging.LoggingFilter;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import com.jme3.system.AppSettings;
+import info.InfoManager;
 
 /**
  * Network client that connects to the server with the MINA libraries.

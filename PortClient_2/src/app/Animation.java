@@ -33,19 +33,19 @@ public class Animation{
         endPos = new Vector3f(0, 0, 10);
         speed = 0.1f;
     }
-//    public void update(){
-//        interp += speed * appState.getTimePerFrame();
-//        Vector3f currentPos = object.getLocalTranslation();
-//        Quaternion currentRot = object.getLocalRotation();
-//        Vector3f forward = new Vector3f(0,0,1);
-//        
-//        if (currentPos.distance(endPos) > 0.1f) {
-//            object.setLocalTranslation(new Vector3f().interpolate(startPos, endPos, interp));
-//            object.rotate(0, rotation, 0);
-//        }
-//        object.addControl((RigidBodyControl)object.getControl(0));
-//        appState.getBulletAppState().getPhysicsSpace().add(object);
-//    }
+    public void update(){
+        interp += speed * appState.getTimePerFrame();
+        Vector3f currentPos = object.getLocalTranslation();
+        Quaternion currentRot = object.getLocalRotation();
+        Vector3f forward = new Vector3f(0,0,1);
+        
+        if (currentPos.distance(endPos) > 0.1f) {
+            object.setLocalTranslation(new Vector3f().interpolate(startPos, endPos, interp));
+            object.rotate(0, rotation, 0);
+        }
+        object.addControl((RigidBodyControl)object.getControl(0));
+        appState.getBulletAppState().getPhysicsSpace().add(object);
+    }
     
     public void setStartPosition(Vector3f start) {
         this.startPos = start;

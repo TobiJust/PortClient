@@ -24,6 +24,7 @@ public class PlayerModel {
     private final SimpleApplication app;
     private Node playerNode;
     private Model playerModel;
+    private Model flyPlayerModel;
     private Spatial player;
     private Vector3f position;
     
@@ -41,7 +42,8 @@ public class PlayerModel {
         //player = new BetterCharacterControl(0.3f, 2.8f, 70f);
          
         CapsuleCollisionShape capsuleShape = new CapsuleCollisionShape(1.5f, 1.8f, 2);
-        playerModel = new Model("assets/Models/oel_tanker.zip","oel_tanker/oel_tanker.scene", this.appState);
+        playerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
+        flyPlayerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
         playerModel.setPosition((float) (Math.random()*100), 0, 0);
         player = playerModel.getModel();
         
@@ -51,5 +53,12 @@ public class PlayerModel {
     public void setPosition(Vector3f position){
         playerModel.setPosition(position.x, position.y, position.z);
         this.position = position;
+    }
+    
+    public PlayerModel flyPlayer(){
+        playerModel = flyPlayerModel;
+        player = flyPlayerModel.getModel();
+        
+        return this;
     }
 }

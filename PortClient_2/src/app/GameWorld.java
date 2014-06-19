@@ -51,7 +51,6 @@ public class GameWorld extends AbstractAppState{
     
     public void init() {
         this.loadWorld();
-        this.loadShips();
         this.addEnvironment();
     }
     
@@ -59,14 +58,7 @@ public class GameWorld extends AbstractAppState{
         
         Model scene = new Model("assets/Models/Insel_oben.zip","insel_oben.scene", this.appState);
         scene.setPosition(0, -40f, 0);
-    }
-    
-    private void loadShips(){
-        Model oel_tanker = new Model("assets/Models/oel_tanker.zip","oel_tanker/oel_tanker.scene", this.appState);
-        oel_tanker.setPosition(100, 0, 0);
-        
-    }
-    
+    }    
     private void addEnvironment() {
         // Water
         fpp = new FilterPostProcessor(assetManager);
