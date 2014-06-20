@@ -55,17 +55,13 @@ public class PlayerModel {
         this.position = position;
     }
     
-    public PlayerModel flyPlayer(){
+    public void flyPlayer(){
         playerModel = flyPlayerModel;
         player = flyPlayerModel.getModel();
-        
-        return this;
     }
     
-    public PlayerModel groundPlayer() {
+    public void groundPlayer() {
         playerModel = groundPlayerModel;
         player = playerModel.getModel();
-        
-        return this;
     }
 }

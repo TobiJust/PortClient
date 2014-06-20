@@ -28,7 +28,7 @@ import util.KeyBindings;
  */
 public class GameAppState extends AbstractAppState {
     /* AppState specific */
-    
+
     private SimpleApplication app;
     private Camera cam;
     private CustomFlyByCamera customFlyCam;
@@ -52,18 +52,18 @@ public class GameAppState extends AbstractAppState {
     private final Chat chat;
     private HashMap<Integer, Ship> allShips = new HashMap<Integer, Ship>();
     private static HashMap<String, PlayerModel> allPlayers = new HashMap<String, PlayerModel>();
-    
+
     public GameAppState(Chat chat) {
         this.chat = chat;
     }
     /* GUI Elements */
-    
+
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
-        
+
         bulletAppState = new BulletAppState();
         stateManager.attach(bulletAppState);
-        
+
         this.stateManager = stateManager;
         this.app = (SimpleApplication) app;
         this.cam = this.app.getCamera();
@@ -71,25 +71,26 @@ public class GameAppState extends AbstractAppState {
         this.assetManager = this.app.getAssetManager();
         this.inputManager = this.app.getInputManager();
         this.viewPort = this.app.getViewPort();
-        
+
         this.inputManager.addMapping("Camera", KeyBindings.CAMERA_CHANGE);
         customFlyCam = new CustomFlyByCamera(cam);
         customFlyCam.setMoveSpeed(1f);
         customFlyCam.registerWithInput(inputManager);
         customFlyCam.setDragToRotate(false);
-        
+
         gameInputHandler = new GameInputHandler(this);
-        
+
         initWorld();
         initPlayer();
         initShips();
     }
-    
+
     @Override
     public void update(float tpf) {
-        if(!isFlyByCamera)
+        if (!isFlyByCamera) {
             player.update(tpf);
-        
+        }
+
         for (PlayerInfo pi : InfoManager.getPlayerList()) {
             if (!allPlayers.containsKey(pi.getName())) {
                 PlayerModel pm = new PlayerModel("player", this);
@@ -100,17 +101,18 @@ public class GameAppState extends AbstractAppState {
                 allPlayers.put(pi.getName(), pm);
             } else {
                 PlayerModel pm = allPlayers.get(pi.getName());
-                if(pi.getState().equals(PlayerInfo.State.FLYING))
-                    pm = pm.flyPlayer();
-                else
-                    pm = pm.groundPlayer();
+                if (pi.getState().equals(PlayerInfo.State.FLYING)) {
+                    pm.flyPlayer();
+                } else {
+                    pm.groundPlayer();
+                }
                 pm.setPosition(new Vector3f(pi.getCoordinates().getX(),
                         pi.getCoordinates().getY(),
                         pi.getCoordinates().getZ()));
             }
-            
+
         }
-        
+
         for (VesselInfo vi : InfoManager.getVesselList()) {
             if (!allShips.containsKey(vi.getMmsi())) {
                 ship = new Ship("ship", this);
@@ -125,25 +127,25 @@ public class GameAppState extends AbstractAppState {
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
                         vi.getCoordinates().getY()));
-                
+
                 allShips.get(vi.getMmsi()).setHeadDirection(
                         vi.getCourse());
             }
         }
     }
-    
+
     private void initWorld() {
         // init the Game World
         world = new GameWorld(this);
         world.init();
     }
-    
+
     private void initPlayer() {
         player = new Player("player", this);
         playerNode = player.getPlayerNode();
         character = player.getCharacterControl();
     }
-    
+
     public void initPlayers() {
         for (PlayerInfo pi : InfoManager.getPlayerList()) {
             PlayerModel pm = new PlayerModel("player", this);
@@ -154,19 +156,21 @@ public class GameAppState extends AbstractAppState {
             allPlayers.put(pi.getName(), pm);
         }
     }
-    
+
     public void initShips() {
         Ship.loadShipModels(this);
-        for (VesselInfo vi : InfoManager.getVesselList()) {
-            ship = new Ship("ship", this);
-            ship.setPosition(
-                    vi.getCoordinates().getX(),
-                    vi.getCoordinates().getZ(),
-                    vi.getCoordinates().getY());
-            allShips.put(vi.getMmsi(), ship);
+        if (InfoManager.getVesselList() != null) {
+            for (VesselInfo vi : InfoManager.getVesselList()) {
+                ship = new Ship("ship", this);
+                ship.setPosition(
+                        vi.getCoordinates().getX(),
+                        vi.getCoordinates().getZ(),
+                        vi.getCoordinates().getY());
+                allShips.put(vi.getMmsi(), ship);
+            }
         }
     }
-    
+
     public void switchCamera() {
         System.out.println("SWITCH CAMERA: " + isFlyByCamera);
         if (!isFlyByCamera) {
@@ -184,7 +188,7 @@ public class GameAppState extends AbstractAppState {
         }
         this.customFlyCam.setMoveSpeed(150f);
     }
-    
+
     public void toggleChat() {
         if (!isChat) {
             chat.showChatWindow();
@@ -194,23 +198,23 @@ public class GameAppState extends AbstractAppState {
             isChat = false;
         }
     }
-    
+
     public BulletAppState getBulletAppState() {
         return this.bulletAppState;
     }
-    
+
     public Player getPlayer() {
         return player;
     }
-    
+
     public SimpleApplication getApp() {
         return this.app;
     }
-    
+
     public float getTimePerFrame() {
         return this.app.getTimer().getTimePerFrame();
     }
-    
+
     public HashMap<Integer, Ship> getAllShips() {
         return allShips;
     }

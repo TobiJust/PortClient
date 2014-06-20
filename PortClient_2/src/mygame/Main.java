@@ -3,6 +3,9 @@ package mygame;
 import app.CustomFlyByCamera;
 import app.StartScreen;
 import com.jme3.app.SimpleApplication;
+import com.jme3.input.KeyInput;
+import com.jme3.input.controls.ActionListener;
+import com.jme3.input.controls.KeyTrigger;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.system.AppSettings;
 import de.lessvoid.nifty.Nifty;
@@ -13,7 +16,6 @@ import java.io.InputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import network.NetworkClient;
-import util.KeyBindings;
 
 /**
  *
@@ -35,9 +37,10 @@ public class Main extends SimpleApplication {
     private static AppSettings settings;
     private static NetworkClient nClient;
     private CustomFlyByCamera customFlyCam;
+    private static SimpleApplication app;
 
     public static void main(String[] args) {
-        Main app = new Main();
+        app = new Main();
 
         // disable startscreen load config from file
         app.setShowSettings(false);
@@ -69,7 +72,6 @@ public class Main extends SimpleApplication {
         app.setSettings(settings);
         nClient = new NetworkClient(settings);
         (new Thread(nClient)).start();
-
         app.start();
     }
 
@@ -87,10 +89,21 @@ public class Main extends SimpleApplication {
 	inputManager.removeListener(flyCam);
 	flyCam.setDragToRotate(true);
         
+        // create own mapping for escape key
+        inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT);
+        inputManager.addMapping("Exit", new KeyTrigger(KeyInput.KEY_ESCAPE));
+        inputManager.addListener(new ActionListener() {
+            public void onAction(String name, boolean isPressed, float tpf) {
+                NetworkClient.getSession().close(true);
+                app.stop();
+            }
+        }, "Exit");
+        
         guiViewPort.addProcessor(niftyDisplay);
     }
     
     public CustomFlyByCamera getCustomFlyByCamera() {
         return customFlyCam;
     }
+    
 }
