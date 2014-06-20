@@ -14,8 +14,8 @@ import java.util.ArrayList;
 public class InfoManager {
     
     private static Console console;
-    private static ArrayList<VesselInfo> vesselList;
-    private static ArrayList<PlayerInfo> playerList;
+    private static ArrayList<VesselInfo> vesselList = new ArrayList<VesselInfo>();
+    private static ArrayList<PlayerInfo> playerList = new ArrayList<PlayerInfo>();
     private static PlayerInfo player;
 
     public static ArrayList<PlayerInfo> getPlayerList() {

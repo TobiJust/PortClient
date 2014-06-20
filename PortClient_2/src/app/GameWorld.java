@@ -56,8 +56,8 @@ public class GameWorld extends AbstractAppState{
     
     private void loadWorld() {
         
-        Model scene = new Model("assets/Models/Insel_oben.zip","insel_oben.scene", this.appState);
-        scene.setPosition(0, -40f, 0);
+        Model scene = new Model("assets/Models/insel_full_scene.zip","insel_full/insel_full.scene", this.appState);
+        scene.setPosition(0, 0, 0);
     }    
     private void addEnvironment() {
         // Water
