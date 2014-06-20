@@ -9,6 +9,7 @@ import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import info.VesselInfo;
 import java.io.Serializable;
 import java.util.ArrayList;
 import util.Model;
@@ -29,6 +30,7 @@ public class Ship implements Serializable{
     private Spatial ship;
     private Vector3f position;
     private static ArrayList<Model> allModels = new ArrayList<Model>();
+    private Animation shipAnimation;
     
     public Ship(String id, GameAppState appState){
         
@@ -51,6 +53,8 @@ public class Ship implements Serializable{
         
         appState.getBulletAppState().getPhysicsSpace().add(ship);
         app.getRootNode().attachChild(shipNode);
+        
+        shipAnimation = new Animation(this, this.appState);
     }
     
     public void setPosition(Vector3f position){
@@ -67,6 +71,7 @@ public class Ship implements Serializable{
         float angle = (float) (FastMath.PI * course/180);
         shipModel.setRotation(0, 1, 0, angle);
     }
+  
     
     public static void loadShipModels(GameAppState app){
         allModels.add(new Model("assets/Models/oel_tanker.zip","oel_tanker/oel_tanker.scene", app));
@@ -74,4 +79,6 @@ public class Ship implements Serializable{
         allModels.add(new Model("assets/Models/autofaehre_mittel_1.zip","autofaehre_mittel_1/autofaehre_mittel_1.scene", app));
         allModels.add(new Model("assets/Models/yacht_1.zip","yacht_1/yacht_1.scene", app));
     }
+
+
 }

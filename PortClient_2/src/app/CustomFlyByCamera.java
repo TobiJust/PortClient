@@ -19,9 +19,11 @@ import network.NetworkClient;
  * @author CaLLe
  */
 public class CustomFlyByCamera extends FlyByCamera {
+    private final float VIEW_DISTANCE = 5000;
     
     public CustomFlyByCamera(Camera cam){
         super(cam);
+        cam.setFrustumFar(VIEW_DISTANCE);
     }
 
     @Override

@@ -23,28 +23,29 @@ public class Animation{
     private float interp = 0.0f;
     private float speed;
     private float rotation;
+    private Ship ship;
     private Spatial object;
     private GameAppState appState;
     
-    public Animation(Spatial object, GameAppState appState)  {
-        this.object = object;
+    public Animation(Ship ship, GameAppState appState)  {
+        this.ship = ship;
+//        object = ship.getModel();
         this.appState = appState;
+//        this.object = ship.getModel();
         startPos = new Vector3f(0, 0, 0);
         endPos = new Vector3f(0, 0, 10);
-        speed = 0.1f;
     }
-    public void update(){
+    public void update(double speed){
         interp += speed * appState.getTimePerFrame();
         Vector3f currentPos = object.getLocalTranslation();
         Quaternion currentRot = object.getLocalRotation();
-        Vector3f forward = new Vector3f(0,0,1);
         
         if (currentPos.distance(endPos) > 0.1f) {
-            object.setLocalTranslation(new Vector3f().interpolate(startPos, endPos, interp));
+            object.setLocalTranslation(new Vector3f().interpolate(endPos, interp));
             object.rotate(0, rotation, 0);
         }
         object.addControl((RigidBodyControl)object.getControl(0));
-        appState.getBulletAppState().getPhysicsSpace().add(object);
+        appState.getBulletAppState().getPhysicsSpace().add(ship);
     }
     
     public void setStartPosition(Vector3f start) {
