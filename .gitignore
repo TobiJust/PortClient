@@ -31,3 +31,5 @@ local.properties
 /dist/
 /nbproject/private/
 /build/
+/PortClient_2/nbproject/private/
+/PortClient_2/build/
