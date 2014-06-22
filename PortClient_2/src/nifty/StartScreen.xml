@@ -16,7 +16,7 @@
                 <panel id="panel_menu_top" height="30px" width="50%" align="center" childLayout="center">
                 </panel>
                 <panel id="panel_menu_text_name" height="30px" width="50%" align="center" childLayout="center">
-                    <text text="Enter our Name" font="Interface/Fonts/Default.fnt" width="100%" height="100%" />
+                    <text text="Enter your Name" font="Interface/Fonts/Default.fnt" width="100%" height="100%" />
                 </panel>
                 <panel id="panel_menu_input_name" height="30px" width="50%" align="center" childLayout="center">
                     <control id="nametextfield" name="textfield" maxLength="20"/>
