@@ -60,12 +60,19 @@ public class GameWorld extends AbstractAppState{
         scene.setPosition(0, -20, 0);
     }    
     private void addEnvironment() {
+        
         // Water
         fpp = new FilterPostProcessor(assetManager);
         water = new WaterFilter(rootNode, sunDirection);
         water.setWaterHeight(initialWaterHeight);
+        water.setReflectionDisplace(100);
+        water.setRefractionConstant(0.1f);
+        water.setRefractionStrength(0.2f);
+        water.setWaterTransparency(1.0f);
+        water.setColorExtinction(new Vector3f(30, 20, 5));
         fpp.addFilter(water);
         app.getViewPort().addProcessor(fpp);
+        
         // Light
         addLight();
         // Sky
@@ -75,7 +82,7 @@ public class GameWorld extends AbstractAppState{
     private void addLight(){
         // Light
                 AmbientLight ambient = new AmbientLight();
-                ambient.setColor(ColorRGBA.White.mult(1.3f));
+                ambient.setColor(ColorRGBA.White.mult(0.3f));
                 rootNode.addLight(ambient);
         
         // Sun Light

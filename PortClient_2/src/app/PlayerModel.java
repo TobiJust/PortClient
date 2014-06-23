@@ -56,14 +56,14 @@ public class PlayerModel {
     }
     
     public void flyPlayer(){
-        playerModel = flyPlayerModel;
         setPosition(new Vector3f(0,-100,0));
+        playerModel = flyPlayerModel;
         player = flyPlayerModel.getModel();
     }
     
     public void groundPlayer() {
-        playerModel = groundPlayerModel;
         setPosition(new Vector3f(0,-100,0));
+        playerModel = groundPlayerModel;
         player = playerModel.getModel();
     }
 }

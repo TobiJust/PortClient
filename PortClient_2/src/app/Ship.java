@@ -154,12 +154,14 @@ public class Ship implements Serializable{
     
     public void setInformation(String info){
         hudText.setSize(8);                                       // font size
+        hudText.lookAt(appState.getGameCam().getLocation(), new Vector3f(0,1,0));
         hudText.setColor(ColorRGBA.Gray);                         // font color
         hudText.setText(info);                                    // the text
-        hudText.setLocalTranslation(this.position.x,
-                this.position.y + hudText.getLineHeight(),
+        hudText.setLocalTranslation(this.position.x - hudText.getLineWidth()/2,
+                this.position.y + hudText.getLineHeight()+10,
                 this.position.z);                                // position
         app.getRootNode().attachChild(hudText);
+        
     }
     
     //    public static void loadShipModels(GameAppState app){

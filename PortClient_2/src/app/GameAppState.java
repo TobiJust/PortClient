@@ -228,4 +228,8 @@ public class GameAppState extends AbstractAppState {
         return allShips;
     }
     
+    public Camera getGameCam() {
+        return this.cam;
+    }
+    
 }
