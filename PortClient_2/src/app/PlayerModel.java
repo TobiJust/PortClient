@@ -57,12 +57,13 @@ public class PlayerModel {
     
     public void flyPlayer(){
         playerModel = flyPlayerModel;
-        player.removeFromParent();
+        setPosition(new Vector3f(0,-100,0));
         player = flyPlayerModel.getModel();
     }
     
     public void groundPlayer() {
         playerModel = groundPlayerModel;
+        setPosition(new Vector3f(0,-100,0));
         player = playerModel.getModel();
     }
 }

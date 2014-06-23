@@ -81,8 +81,8 @@ public class GameAppState extends AbstractAppState {
         customFlyCam.setDragToRotate(false);
         
         gameInputHandler = new GameInputHandler(this);
-                
-    
+        
+        
         initWorld();
         initPlayer();
         initShips();
@@ -117,8 +117,12 @@ public class GameAppState extends AbstractAppState {
         }
         
         for (VesselInfo vi : InfoManager.getVesselList()) {
+            
+            
             if (!allShips.containsKey(vi.getMmsi())) {
-                ship = new Ship("ship", this);
+                
+                ship = new Ship(vi.getType(), this);
+//                ship = new Ship(vi.getType(), this);
                 Vector3f shipCoordinates = new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
@@ -126,6 +130,7 @@ public class GameAppState extends AbstractAppState {
                 ship.setPosition(shipCoordinates);
                 allShips.put(vi.getMmsi(), ship);
             } else {
+                
                 allShips.get(vi.getMmsi()).setPosition(new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
@@ -162,7 +167,7 @@ public class GameAppState extends AbstractAppState {
     }
     
     public void initShips() {
-        Ship.loadShipModels(this);
+//        Ship.loadShipModels(this);
         if (InfoManager.getVesselList() != null) {
             for (VesselInfo vi : InfoManager.getVesselList()) {
                 ship = new Ship("ship", this);

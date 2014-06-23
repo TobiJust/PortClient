@@ -22,8 +22,17 @@ import util.Model;
  */
 public class Ship implements Serializable{
     
+    public static final String TYPE_DEFAULT = "segelboot_1";
+    
+    public static final String TYPE_MIDDLE = "yacht_1";
+    public static final String TYPE_WORK_SHIP = "motorboot_1";
+    public static final String TYPE_TANK = "oel_tanker";
+    public static final String TYPE_PRIVATE = "segelboot_1";
+    public static final String TYPE_AGENCY = "yacht_2";
+    public static final String TYPE_PASSENGER = "autofaehre_klein_1";
+    
     /** the character identifier  */
-    public String id;
+    public String type;
     /** the graphical app in which the character live */
     private GameAppState appState;
     private final SimpleApplication app;
@@ -31,13 +40,50 @@ public class Ship implements Serializable{
     private Model shipModel;
     private Spatial ship;
     private Vector3f position;
-    private static ArrayList<Model> allModels = new ArrayList<Model>();
+    //    private static ArrayList<Model> allModels = new ArrayList<Model>();
     private Animation shipAnimation;
     private BitmapText hudText;
     
-    public Ship(String id, GameAppState appState){
+    private static final String[] GROUP_WORK_SHIP = {
+        "TUG",
+        "SPC",
+        "GRF",
+        "BLS"
+    };
+    
+    private static final String[] GROUP_PASSENGER = {
+        "PA",
+        "FBT",
+        "ROU"
+    };
+    
+    private static final String[] GROUP_TANK = {
+        "CA",
+        "CHM",
+        "CON",
+        "TPG"
+    };
+    
+    private static final String[] GROUP_AGENCY = {
+        "PLT",
+        "AMR",
+        "PMP"
+    };
+    
+    private static final String[] GROUP_MIDDLE = {
+        "HYD"
+    };
+    
+    private static final String[] GROUP_PRIVATE = {
+        "APL",
+        "VLR",
+        "YAT"
+    };
+    
+    
+    public Ship(String type,GameAppState appState){
         
-        this.id = id;
+        this.type = type;
         this.appState = appState;
         this.app = appState.getApp();
         hudText = new BitmapText(app.getAssetManager().loadFont("Interface/Fonts/Default.fnt"), false);
@@ -49,9 +95,11 @@ public class Ship implements Serializable{
         shipNode = new Node("ship");
         
         //TODO: Model aus vorhandenen wählen
-        //        int n = (int)(Math.random()*allModels.size());
-        //shipModel = allModels.get(n);
-        shipModel = new Model("assets/Models/yacht_1.zip","yacht_1/yacht_1.scene", this.appState);
+        //                int n = (int)(Math.random()*allModels.size());
+        //        shipModel = allModels.get(n);
+        
+        shipModel = createModel(getShipGroup(type));
+        //        shipModel = new Model("assets/Models/yacht_1.zip","yacht_1/yacht_1.scene", this.appState);
         shipModel.setPosition((float) (Math.random()*100), 0, 0);
         ship = shipModel.getModel();
         
@@ -59,6 +107,35 @@ public class Ship implements Serializable{
         app.getRootNode().attachChild(shipNode);
         
         shipAnimation = new Animation(this, this.appState);
+    }
+    
+    public String getShipGroup(String type){
+        
+        int index;
+        for(index=0; index<GROUP_AGENCY.length; index++)
+            if(GROUP_AGENCY[index].contains(type))
+                return TYPE_AGENCY;
+        for(index=0; index<GROUP_MIDDLE.length; index++)
+            if(GROUP_MIDDLE[index].contains(type))
+                return TYPE_MIDDLE;
+        for(index=0; index<GROUP_PRIVATE.length; index++)
+            if(GROUP_PRIVATE[index].contains(type))
+                return TYPE_PRIVATE;
+        for(index=0; index<GROUP_PASSENGER.length; index++)
+            if(GROUP_PASSENGER[index].contains(type))
+                return TYPE_PASSENGER;
+        for(index=0; index<GROUP_TANK.length; index++)
+            if(GROUP_TANK[index].contains(type))
+                return TYPE_TANK;
+        for(index=0; index<GROUP_WORK_SHIP.length; index++)
+            if(GROUP_WORK_SHIP[index].contains(type))
+                return TYPE_WORK_SHIP;
+        
+        return TYPE_DEFAULT;
+    }
+    
+    public Model createModel(String identifier) {
+        return new Model("assets/Models/"+identifier+".zip",identifier+"/"+ identifier + ".scene", appState);
     }
     
     public void setPosition(Vector3f position){
@@ -85,11 +162,16 @@ public class Ship implements Serializable{
         app.getRootNode().attachChild(hudText);
     }
     
-    public static void loadShipModels(GameAppState app){
-        allModels.add(new Model("assets/Models/oel_tanker.zip","oel_tanker/oel_tanker.scene", app));
-        allModels.add(new Model("assets/Models/autofaehre_klein_1.zip","autofaehre_klein_1/autofaehre_klein.scene", app));
-        allModels.add(new Model("assets/Models/autofaehre_mittel_1.zip","autofaehre_mittel_1/autofaehre_mittel_1.scene", app));
-        allModels.add(new Model("assets/Models/yacht_1.zip","yacht_1/yacht_1.scene", app));
+    //    public static void loadShipModels(GameAppState app){
+    //        allModels.add(new Model("assets/Models/oel_tanker.zip","oel_tanker/oel_tanker.scene", app));
+    //        allModels.add(new Model("assets/Models/autofaehre_klein_1.zip","autofaehre_klein_1/autofaehre_klein.scene", app));
+    //        allModels.add(new Model("assets/Models/autofaehre_mittel_1.zip","autofaehre_mittel_1/autofaehre_mittel_1.scene", app));
+    //        allModels.add(new Model("assets/Models/yacht_1.zip","yacht_1/yacht_1.scene", app));
+    //    }
+    
+    
+    public Vector3f getPosition(){
+        return this.position;
     }
     
     

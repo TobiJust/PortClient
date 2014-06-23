@@ -60,8 +60,8 @@ public class Model implements Serializable{
     }
     
     public void setPosition(float x, float y, float z){
-        this.position = new Vector3f(x, y, z);
         
+        this.position = new Vector3f(x, y, z);
         model.getControl(RigidBodyControl.class).setPhysicsLocation(position);
     }
     public void setRotation(float angle){
