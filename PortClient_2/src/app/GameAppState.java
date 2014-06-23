@@ -119,14 +119,14 @@ public class GameAppState extends AbstractAppState {
                 Vector3f shipCoordinates = new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
-                        vi.getCoordinates().getY());
+                        (vi.getCoordinates().getY()*-1));
                 ship.setPosition(shipCoordinates);
                 allShips.put(vi.getMmsi(), ship);
             } else {
                 allShips.get(vi.getMmsi()).setPosition(new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
-                        vi.getCoordinates().getY()));
+                        (vi.getCoordinates().getY()*-1)));
                 
                 allShips.get(vi.getMmsi()).setHeadDirection(
                         vi.getCourse());
