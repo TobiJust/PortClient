@@ -122,7 +122,7 @@ public class GameAppState extends AbstractAppState {
             if (!allShips.containsKey(vi.getMmsi())) {
                 
                 ship = new Ship(vi.getType(), this);
-//                ship = new Ship(vi.getType(), this);
+                //                ship = new Ship(vi.getType(), this);
                 Vector3f shipCoordinates = new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
@@ -136,8 +136,12 @@ public class GameAppState extends AbstractAppState {
                         vi.getCoordinates().getZ(),
                         (vi.getCoordinates().getY()*-1)));
                 
-                allShips.get(vi.getMmsi()).setHeadDirection(
-                        vi.getCourse());
+                if(vi.getSpeed() > 0.3){
+//                    if(vi.getName().contains("BARMBEK"))
+//                        System.out.println("Kurs " + vi.getCourse() + " Speed " + vi.getSpeed());
+                    allShips.get(vi.getMmsi()).setHeadDirection(
+                            vi.getCourse(), vi.getSpeed());
+                }
                 allShips.get(vi.getMmsi()).setInformation(vi.getName());
             }
         }
@@ -167,7 +171,7 @@ public class GameAppState extends AbstractAppState {
     }
     
     public void initShips() {
-//        Ship.loadShipModels(this);
+        //        Ship.loadShipModels(this);
         if (InfoManager.getVesselList() != null) {
             for (VesselInfo vi : InfoManager.getVesselList()) {
                 ship = new Ship("ship", this);

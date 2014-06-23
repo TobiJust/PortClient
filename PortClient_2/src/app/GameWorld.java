@@ -12,6 +12,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.post.FilterPostProcessor;
 import com.jme3.scene.Node;
@@ -58,6 +59,7 @@ public class GameWorld extends AbstractAppState{
         
         Model scene = new Model("assets/Models/Insel_full_scene.zip","insel_full.scene", this.appState);
         scene.setPosition(0, -20, 0);
+//        scene.setRotation(1);
     }    
     private void addEnvironment() {
         

@@ -147,9 +147,12 @@ public class Ship implements Serializable{
         shipModel.setPosition(x, y, z);
         this.position = new Vector3f(x,y,z);
     }
-    
-    public void setHeadDirection(double course) {
-        shipModel.setRotation((float) course);
+    double current = 0.0;
+    public void setHeadDirection(double course, double speed) {
+        if(Math.abs(course - current) > 10){
+            shipModel.setRotation((float) course);
+        }
+        current = course;
     }
     
     public void setInformation(String info){
