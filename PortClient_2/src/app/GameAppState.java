@@ -8,7 +8,10 @@ import com.jme3.asset.AssetManager;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.font.BitmapFont;
+import com.jme3.font.BitmapText;
 import com.jme3.input.InputManager;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.renderer.ViewPort;
@@ -18,7 +21,6 @@ import info.InfoManager;
 import info.PlayerInfo;
 import info.VesselInfo;
 import java.util.HashMap;
-import mygame.Main;
 import util.GameInputHandler;
 import util.KeyBindings;
 
@@ -79,7 +81,8 @@ public class GameAppState extends AbstractAppState {
         customFlyCam.setDragToRotate(false);
         
         gameInputHandler = new GameInputHandler(this);
-        
+                
+    
         initWorld();
         initPlayer();
         initShips();
@@ -130,6 +133,7 @@ public class GameAppState extends AbstractAppState {
                 
                 allShips.get(vi.getMmsi()).setHeadDirection(
                         vi.getCourse());
+                allShips.get(vi.getMmsi()).setInformation(vi.getName());
             }
         }
     }
@@ -218,4 +222,5 @@ public class GameAppState extends AbstractAppState {
     public HashMap<Integer, Ship> getAllShips() {
         return allShips;
     }
+    
 }

@@ -41,8 +41,8 @@ public class PlayerModel {
     private void createPlayerModel() {
         playerNode = new Node("player");
         
-        groundPlayerModel = new Model("assets/Models/Figur1.zip","Figur1/Figur1.mesh.xml", this.appState);
-        flyPlayerModel = new Model("assets/Models/Figur2.zip","Figur2.mesh.xml", this.appState);
+        groundPlayerModel = new Model("assets/Models/Figur_Boden.zip","Figur1.mesh.xml", this.appState);
+        flyPlayerModel = new Model("assets/Models/Figur_Luft.zip","Figur_Luft.mesh.xml", this.appState);
         playerModel = groundPlayerModel;
         playerModel.setPosition((float) (Math.random()*100), 0, 0);
         player = flyPlayerModel.getModel();

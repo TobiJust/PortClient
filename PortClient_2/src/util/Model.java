@@ -40,7 +40,7 @@ public class Model implements Serializable{
             assetManager.registerLocator(filePath, ZipLocator.class);
         model = assetManager.loadModel(sceneName);
         model.setLocalScale(scale);
-        model.setLocalTranslation(position);
+//        model.setLocalTranslation(position);
         
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
