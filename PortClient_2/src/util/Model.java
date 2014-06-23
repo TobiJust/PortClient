@@ -11,6 +11,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.util.CollisionShapeFactory;
+import com.jme3.math.FastMath;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -40,7 +41,7 @@ public class Model implements Serializable{
             assetManager.registerLocator(filePath, ZipLocator.class);
         model = assetManager.loadModel(sceneName);
         model.setLocalScale(scale);
-//        model.setLocalTranslation(position);
+        //        model.setLocalTranslation(position);
         
         // We set up collision detection for the scene by creating a
         // compound collision shape and a static RigidBodyControl with mass zero.
@@ -63,12 +64,17 @@ public class Model implements Serializable{
         
         model.getControl(RigidBodyControl.class).setPhysicsLocation(position);
     }
-    public void setRotation(float x, float y, float z, float w){
-        Quaternion rotation = new Quaternion(x, y, z, w);
-           model.getControl(RigidBodyControl.class).setPhysicsRotation(rotation);
+    public void setRotation(float angle){
+        Quaternion rotation = new Quaternion();
+        rotation.fromAngleAxis( FastMath.PI * angle/180 , new Vector3f(0,-1,0));
+        model.getControl(RigidBodyControl.class).setPhysicsRotation(rotation);
+    }
     
+    public Quaternion getRotation() {
+        return model.getLocalRotation();
     }
     public Spatial getModel(){
         return model;
     }
+    
 }

@@ -57,6 +57,7 @@ public class PlayerModel {
     
     public void flyPlayer(){
         playerModel = flyPlayerModel;
+        player.removeFromParent();
         player = flyPlayerModel.getModel();
     }
     

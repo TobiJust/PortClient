@@ -72,11 +72,10 @@ public class Ship implements Serializable{
     }
     
     public void setHeadDirection(double course) {
-        float angle = (float) (FastMath.PI * course/180);
-        shipModel.setRotation(0, 1, 0, angle);
+        shipModel.setRotation((float) course);
     }
     
-    public void setInformation(String info){        
+    public void setInformation(String info){
         hudText.setSize(8);                                       // font size
         hudText.setColor(ColorRGBA.Gray);                         // font color
         hudText.setText(info);                                    // the text
