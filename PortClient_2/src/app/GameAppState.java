@@ -136,12 +136,8 @@ public class GameAppState extends AbstractAppState {
                         vi.getCoordinates().getZ(),
                         (vi.getCoordinates().getY()*-1)));
                 
-                if(vi.getSpeed() > 0.3){
-//                    if(vi.getName().contains("BARMBEK"))
-//                        System.out.println("Kurs " + vi.getCourse() + " Speed " + vi.getSpeed());
-                    allShips.get(vi.getMmsi()).setHeadDirection(
-                            vi.getCourse(), vi.getSpeed());
-                }
+                allShips.get(vi.getMmsi()).setHeadDirection(
+                        vi.getCourse(), vi.getSpeed());
                 allShips.get(vi.getMmsi()).setInformation(vi.getName());
             }
         }

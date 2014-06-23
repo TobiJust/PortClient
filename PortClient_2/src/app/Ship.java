@@ -5,15 +5,14 @@
 package app;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.font.BitmapFont;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.font.BitmapText;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import java.io.Serializable;
-import java.util.ArrayList;
 import util.Model;
 
 /**
@@ -149,10 +148,23 @@ public class Ship implements Serializable{
     }
     double current = 0.0;
     public void setHeadDirection(double course, double speed) {
-        if(Math.abs(course - current) > 10){
+        if(Math.abs(course - current) < 10){
             shipModel.setRotation((float) course);
         }
         current = course;
+        
+        CollisionResults results = new CollisionResults();
+        for(Spatial sp : app.getRootNode().getChildren()){
+            shipNode.collideWith(sp, results);
+            if(results.size() > 0 ){
+                CollisionResult closest = results.getClosestCollision();
+                System.out.println("What was hit? " + closest.getGeometry().getName());
+                System.out.println("Where was hit? " + closest.getContactPoint());
+                System.out.println("Distance? " + closest.getDistance());
+            }
+//            else                
+//                System.out.println("No Collision");
+        }
     }
     
     public void setInformation(String info){
