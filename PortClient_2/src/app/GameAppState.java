@@ -131,11 +131,15 @@ public class GameAppState extends AbstractAppState {
                 allShips.put(vi.getMmsi(), ship);
             } else {
                 
+//                    System.out.println("Koord. " + vi.getCoordinates().getX() + " " + vi.getCoordinates().getZ() + " " + 
+//                             vi.getCoordinates().getY());
+                
                 allShips.get(vi.getMmsi()).setPosition(new Vector3f(
                         vi.getCoordinates().getX(),
                         vi.getCoordinates().getZ(),
                         (vi.getCoordinates().getY()*-1)));
                 
+//                if(vi.getName().contains("BARMBEK"))
                 allShips.get(vi.getMmsi()).setHeadDirection(
                         vi.getCourse(), vi.getSpeed());
                 allShips.get(vi.getMmsi()).setInformation(vi.getName());

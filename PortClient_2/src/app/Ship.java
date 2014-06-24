@@ -146,25 +146,25 @@ public class Ship implements Serializable{
         shipModel.setPosition(x, y, z);
         this.position = new Vector3f(x,y,z);
     }
-    double current = 0.0;
+    double current = -1.0;
     public void setHeadDirection(double course, double speed) {
-        if(Math.abs(course - current) < 10){
-            shipModel.setRotation((float) course);
-        }
-        current = course;
+
         
-        CollisionResults results = new CollisionResults();
-        for(Spatial sp : app.getRootNode().getChildren()){
-            shipNode.collideWith(sp, results);
-            if(results.size() > 0 ){
-                CollisionResult closest = results.getClosestCollision();
-                System.out.println("What was hit? " + closest.getGeometry().getName());
-                System.out.println("Where was hit? " + closest.getContactPoint());
-                System.out.println("Distance? " + closest.getDistance());
-            }
-//            else                
-//                System.out.println("No Collision");
+        System.out.print("Course: " + course);
+        System.out.print("Current: " + current);
+        System.out.print("Difference: " + (course - current));
+
+        if(current == -1.0){
+            shipModel.setRotation((float) course);
+            current = course;
+            
         }
+        if(Math.abs(course - current) < 1){
+        current = course;
+            shipModel.setRotation((float) course);
+            System.out.println(" true !");
+        }else System.out.println(" false !");
+    
     }
     
     public void setInformation(String info){
